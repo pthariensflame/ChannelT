@@ -2,9 +2,10 @@
 module Control.Monad.Channel.Class (MonadChannel(..)) where
 import Control.Monad.Trans.Free (FreeT)
 import qualified Control.Monad.Trans.Channel as CMTC (sync)
+import Control.Applicative (Applicative)
 
-class (Monad m) => MonadChannel (sel :: * -> * -> *) (m :: * -> *) | m -> sel where
+class (Monad m, Applicative m) => MonadChannel (sel :: * -> * -> *) (m :: * -> *) | m -> sel where
   sync :: sel i o -> o -> m i
 
-instance (Monad m) => MonadChannel sel (FreeF (ChannelF sel) m) where
+instance (Monad m, Applicative m) => MonadChannel sel (FreeT (ChannelF sel) m) where
   sync = CMTC.sync
