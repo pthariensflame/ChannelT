@@ -1,6 +1,7 @@
 {-# LANGUAGE MultiParamTypeClasses, FunctionalDependencies, KindSignatures, FlexibleInstances #-}
 module Control.Monad.Channel.Class (MonadChannel(..)) where
 import Control.Monad.Trans.Free (FreeT)
+import Control.Monad.Trans.Channel (ChannelF)
 import qualified Control.Monad.Trans.Channel as CMTC (sync)
 import Control.Applicative (Applicative)
 
