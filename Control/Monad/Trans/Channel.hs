@@ -4,7 +4,9 @@ module Control.Monad.Trans.Channel (Channel,
                                     ChannelT,
                                     runChannelT,
                                     sync,
-                                    EmptySel) where
+                                    EmptySel,
+                                    -- * Internals
+                                    ChannelF(..)) where
 import Control.Monad.Trans
 import Control.Monad.Identity
 import Control.Monad.Base

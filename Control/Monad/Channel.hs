@@ -1,4 +1,4 @@
-{-# LANGUAGE MultiParamTypeClasses, FunctionalDependencies, KindSignatures, EmptyDataDecls, ExistentialQuantification #-}
+{-# LANGUAGE MultiParamTypeClasses, FunctionalDependencies, KindSignatures, EmptyDataDecls, ExistentialQuantification, FlexibleInstances #-}
 module Control.Monad.Channel (Channel,
                               runChannel,
                               ChannelT,
