@@ -9,12 +9,12 @@ import Control.Monad.Channel.Class
 import Control.Monad.Identity
 import Control.Monad.Trans.Free (FreeT(..), FreeF(..))
 
-type EmptyChannel = forall (sel :: * -> * -> *) (m :: * -> *). MonadChannel sel m => m
+type EmptyChannel a = forall (sel :: * -> * -> *) (m :: * -> *). MonadChannel sel m => m a
 
 runChannel :: EmptyChannelT Identity a -> a
 runChannel = runIdentity . runChannelT
 
-type EmptyChannelT = forall (sel :: * -> * -> *). ChannelT sel
+type EmptyChannelT m a = forall (sel :: * -> * -> *). ChannelT sel m a
 
 runChannelT :: (Functor m) => EmptyChannelT m a -> m a
 runChannelT (FreeT a) = fmap (\(Pure x) -> x) a

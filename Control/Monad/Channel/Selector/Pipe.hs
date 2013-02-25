@@ -12,9 +12,9 @@ import Control.Monad.Channel.Selector.Empty
 import Control.Monad.Trans.Free (FreeT(..), FreeF(..))
 import Control.Applicative
 
-type PipeChannel i o = Channel (PipeSelector i o)
+type PipeChannel i o a = Channel (PipeSelector i o) a
 
-type PipeChannelT i o = ChannelT (PipeSelector i o)
+type PipeChannelT i o m a = ChannelT (PipeSelector i o) m a
 
 data PipeSelector :: * -> * -> * -> * where
   AwaitPipe :: PipeSelector i o i ()

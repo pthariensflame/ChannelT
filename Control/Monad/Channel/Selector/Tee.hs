@@ -23,9 +23,9 @@ data TeeSelector :: * -> * -> * -> * -> * -> * where
   AwaitRightTee :: TeeSelector iL iR o iR ()
   YieldTee :: TeeSelector iL iR o () o
 
-type TeeChannel iL iR o = Channel (TeeSelector iL iR o)
+type TeeChannel iL iR o a = Channel (TeeSelector iL iR o) a
 
-type TeeChannelT iL iR o = ChannelT (TeeSelector iL iR o)
+type TeeChannelT iL iR o m a= ChannelT (TeeSelector iL iR o) m a
 
 awaitLeft :: TeeChannel iL iR o iL
 awaitLeft = syncOn AwaitLeftTee ()

@@ -16,9 +16,9 @@ data ProxySelector :: * -> * -> * -> * -> * -> * -> * where
   RequestProxy :: ProxySelector uO uI dI dO uI uO
   RespondProxy :: ProxySelector uO uI dI dO dI dO
 
-type ProxyChannel uO uI dI dO = Channel (ProxySelector uO uI dI dO)
+type ProxyChannel uO uI dI dO a = Channel (ProxySelector uO uI dI dO) a
 
-type ProxyChannelT uO uI dI dO = ChannelT (ProxySelector uO uI dI dO)
+type ProxyChannelT uO uI dI dO m a = ChannelT (ProxySelector uO uI dI dO) m a
 
 runProxy :: (Monad m) => ProxyChannelT uO () () dO m a -> EmptyChannelT m a
 runProxy (FreeT a) = FreeT $ a >>= \x -> case x of

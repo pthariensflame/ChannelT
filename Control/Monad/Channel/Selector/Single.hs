@@ -9,9 +9,9 @@ import Control.Monad.Channel.Selector.Empty
 import Control.Monad.Trans.Free (FreeT(..), FreeF(..))
 import Control.Applicative
 
-type SingleChannel = Channel SingleSelector
+type SingleChannel i o a = Channel (SingleSelector i o) a
 
-type SingleChannelT = ChannelT SingleSelector
+type SingleChannelT i o m a = ChannelT (SingleSelector i o) m a
 
 data SingleSelector :: * -> * -> * -> * -> * where
   Single :: Single i o i o

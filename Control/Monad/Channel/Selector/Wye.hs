@@ -24,9 +24,9 @@ data WyeSelector :: * -> * -> * -> * -> * -> * where
   AwaitWyeWye :: WyeSelector iL iR o (Either iL iR) ()
   YieldWye :: WyeSelector iL iR o () o
 
-type WyeChannel iL iR o = Channel (WyeSelector iL iR o)
+type WyeChannel iL iR o a = Channel (WyeSelector iL iR o) a
 
-type WyeChannelT iL iR o = ChannelT (WyeSelector iL iR o)
+type WyeChannelT iL iR o m a = ChannelT (WyeSelector iL iR o) m a
 
 awaitLeft :: WyeChannel iL iR o iL
 awaitLeft = syncOn AwaitLeftWye ()
