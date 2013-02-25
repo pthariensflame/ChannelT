@@ -1,5 +1,5 @@
 {-# LANGUAGE GADTs, KindSignatures, RankNTypes, LiberalTypeSynonyms #-}
-module Control.Moand.Channel.Selector.Pipe (PipeChannel,
+module Control.Monad.Channel.Selector.Pipe (PipeChannel,
                                             PipeChannelT,
                                             runPipe,
                                             await,
