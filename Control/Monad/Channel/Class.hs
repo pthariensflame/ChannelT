@@ -1,12 +1,15 @@
-{-# LANGUAGE MultiParamTypeClasses, FunctionalDependencies, KindSignatures, FlexibleInstances #-}
-module Control.Monad.Channel.Class (MonadChannel(..)) where
+{-# LANGUAGE MultiParamTypeClasses, FunctionalDependencies, KindSignatures, FlexibleInstances, RankNTypes, LiberalTypeSynonyms #-}
+module Control.Monad.Channel.Class (MonadChannel(..),
+                                    Channel) where
 import Control.Monad.Trans.Free (FreeT)
 import Control.Monad.Trans.Channel (ChannelF)
-import qualified Control.Monad.Trans.Channel as CMTC (sync)
+import qualified Control.Monad.Trans.Channel as CMTC (syncOn)
 import Control.Applicative (Applicative)
 
 class (Monad m, Applicative m) => MonadChannel (sel :: * -> * -> *) (m :: * -> *) | m -> sel where
-  sync :: sel i o -> o -> m i
+  syncOn :: sel i o -> o -> m i
 
 instance (Monad m, Applicative m) => MonadChannel sel (FreeT (ChannelF sel) m) where
-  sync = CMTC.sync
+  syncOn = CMTC.syncOn
+
+type Channel sel = forall (m :: * -> *). (MonadChannel sel m) => m
