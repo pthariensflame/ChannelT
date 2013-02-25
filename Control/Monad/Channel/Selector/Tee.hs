@@ -28,13 +28,13 @@ type TeeChannel iL iR o = Channel (TeeSelector iL iR o)
 type TeeChannelT iL iR o = ChannelT (TeeSelector iL iR o)
 
 awaitLeft :: TeeChannel iL iR o iL
-awaitLeft = sync AwaitLeftTee ()
+awaitLeft = syncOn AwaitLeftTee ()
 
 awaitRight :: TeeChannel iL iR o iR
-awaitRight = sync AwaitRightTee ()
+awaitRight = syncOn AwaitRightTee ()
 
 yield :: o -> TeeChannel iL iR o ()
-yield = sync YieldTee
+yield = syncOn YieldTee
 
 (>@+>) :: (Monad m) => PipeT iL mL m a -> TeeChannelT mL iR o m a -> TeeChannelT iL iR o m a
 FreeT a >@+> FreeT b = FreeT $ do x <- a

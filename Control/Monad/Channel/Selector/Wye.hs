@@ -29,16 +29,16 @@ type WyeChannel iL iR o = Channel (WyeSelector iL iR o)
 type WyeChannelT iL iR o = ChannelT (WyeSelector iL iR o)
 
 awaitLeft :: WyeChannel iL iR o iL
-awaitLeft = sync AwaitLeftWye ()
+awaitLeft = syncOn AwaitLeftWye ()
 
 awaitRight :: WyeChannel iL iR o iR
-awaitRight = sync AwaitRightWye ()
+awaitRight = syncOn AwaitRightWye ()
 
 awaitWye :: WyeChannel iL iR o (Either iL iR)
-awaitWye = sync AwaitWyeWye ()
+awaitWye = syncOn AwaitWyeWye ()
 
 yield :: o -> WyeChannel iL iR o ()
-yield = sync YieldWye
+yield = syncOn YieldWye
 
 (>&+>) :: (Monad m) => PipeT iL mL m a -> WyeChannelT mL iR o m a -> WyeChannelT iL iR o m a
 FreeT a >&+> FreeT b = FreeT $ do x <- a

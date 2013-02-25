@@ -4,7 +4,8 @@ module Control.Monad.Channel.Selector.Empty (EmptyChannel,
                                              EmptyChannelT,
                                              runChannelT,
                                              EmptySelector(..)) where
-import Control.Monad.Trans.Channel
+import Control.Monad.Trans.Channel hiding (syncOn)
+import Control.Monad.Channel.Class
 import Control.Monad.Identity
 import Control.Monad.Trans.Free (FreeT(..), FreeF(..))
 
