@@ -12,4 +12,4 @@ class (Monad m, Applicative m) => MonadChannel (sel :: * -> * -> *) (m :: * -> *
 instance (Monad m, Applicative m) => MonadChannel sel (FreeT (ChannelF sel) m) where
   syncOn = CMTC.syncOn
 
-type Channel sel = forall (m :: * -> *). (MonadChannel sel m) => m
+type Channel sel s = forall (m :: * -> *). (MonadChannel sel m) => m a
