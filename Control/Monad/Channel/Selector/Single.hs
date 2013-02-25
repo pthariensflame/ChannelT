@@ -14,7 +14,7 @@ type SingleChannel i o a = Channel (SingleSelector i o) a
 type SingleChannelT i o m a = ChannelT (SingleSelector i o) m a
 
 data SingleSelector :: * -> * -> * -> * -> * where
-  Single :: Single i o i o
+  Single :: SingleSelector i o i o
 
 sync :: o -> SingleChannel i o i
 sync = syncOn Single
