@@ -1,4 +1,4 @@
-{-# LANGUAGE MultiParamTypeClasses, FunctionalDependencies, KindSignatures, FlexibleInstances, RankNTypes, LiberalTypeSynonyms #-}
+{-# LANGUAGE MultiParamTypeClasses, FunctionalDependencies, KindSignatures, FlexibleInstances, RankNTypes, LiberalTypeSynonyms, FlexibleContexts #-}
 module Control.Monad.Channel.Class (MonadChannel(..),
                                     Channel) where
 import Control.Monad.Trans.Free (FreeT)
