@@ -32,7 +32,7 @@ yieldOn :: kO o -> o -> ComachineChannel i kO ()
 yieldOn = syncOn . YieldOnComachine
 
 yield :: (Category c) => o -> ComachineChannel i (c o) ()
-yield = yieldOn id o
+yield = yieldOn id
 
 (>&>) :: (Applicative m, Monad m) => PipeChannelT i q m a -> ComachineChannelT q kO m a -> ComachineChannelT i kO m a
 FreeT a >&> FreeT b = FreeT $ do x <- a
