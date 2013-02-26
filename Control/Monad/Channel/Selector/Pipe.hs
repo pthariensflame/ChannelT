@@ -22,7 +22,7 @@ data PipeSelector :: * -> * -> * -> * -> * where
 
 runPipe :: (Monad m) => PipeChannelT () o m a -> EmptyChannelT m a
 runPipe (FreeT a) = FreeT $ a >>= \x -> case x of
-  Pure v -> return v
+  Pure v -> return (Pure v)
   Free (SyncChannel AwaitPipe _ i) -> i ()
   Free (SyncChannel YieldPipe _ i) -> i ()
 
