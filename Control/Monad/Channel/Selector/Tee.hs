@@ -84,6 +84,6 @@ FreeT a <+@< FreeT b = FreeT $ do x <- a
 runTee :: (Monad m) => TeeChannelT () () o m a -> EmptyChannelT m a
 runTee (FreeT a) = FreeT $ a >>= \x -> case x of
   Pure v -> return (Pure v)
-  Free (SyncChannel AwaitLeftTee _ iL) -> (runFreeT $ iL ()) >>= (runFreeT . runTee)
-  Free (SyncChannel AwaitRightTee _ iR) -> (runFreeT $ iR ()) >>= (runFreeT . runTee)
-  Free (SyncChannel YieldTee _ iU) -> (runFreeT $ iU ()) >>= (runFreeT . runTee)
+  Free (SyncChannel AwaitLeftTee _ iL) -> runFreeT . runWye $ il ()
+  Free (SyncChannel AwaitRightTee _ iR) -> runFreeT . runWye $ iR ()
+  Free (SyncChannel YieldTee _ iU) -> runFreeT . runWye $ iU ()
