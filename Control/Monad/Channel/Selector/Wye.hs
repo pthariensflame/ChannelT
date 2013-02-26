@@ -92,7 +92,7 @@ FreeT a <+&< FreeT b = FreeT $ do x <- a
 runWye :: (Applicative m, Monad m) => WyeChannelT () () o m a -> EmptyChannelT m a
 runWye (FreeT a) = FreeT $ a >>= \x -> case x of
   Pure v -> return (Pure v)
-  Free (SyncChannel AwaitLeftWye _ iL) -> iL () >>= (runFreeT . runWye)
-  Free (SyncChannel AwaitRightWye _ iR) -> iR () >>= (runFreeT . runWye)
-  Free (SyncChannel AwaitWyeWye _ iW) -> iW (Left ()) >>= (runFreeT . runWye)
-  Free (SyncChannel YieldWye _ iU) -> iU () >>= (runFreeT . runWye)
+  Free (SyncChannel AwaitLeftWye _ iL) -> runFreeT $ iL () >>= runWye
+  Free (SyncChannel AwaitRightWye _ iR) -> runFreeT $ iR () >>= runWye
+  Free (SyncChannel AwaitWyeWye _ iW) -> runFreeT $ iW (Left ()) >>= runWye
+  Free (SyncChannel YieldWye _ iU) -> runFreeT $ iU () >>= runWye
