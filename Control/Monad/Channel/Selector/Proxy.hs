@@ -40,7 +40,7 @@ FreeT a >-> FreeT b = FreeT $ do x <- a
                                    (_, Pure v) -> return (Pure v)
                                    (Free (SyncChannel RequestProxy oUO iUI), _) -> runFreeT $ request oUO >>= \v -> iUI v >-> FreeT (return y)
                                    (_, Free (SyncChannel RespondProxy oDO iDI)) -> runFreeT $ respond oDO >>= \v -> FreeT (return x) >-> iDI v
-                                   (Free (SyncChannel RespondProxy oMD iMU), Free (SyncChannel RequestProxy oMU, iMD)) -> runFreeT $ iMU oMU >-> iMD oMD
+                                   (Free (SyncChannel RespondProxy oMD iMU), Free (SyncChannel RequestProxy oMU iMD)) -> runFreeT $ iMU oMU >-> iMD oMD
 
 (<-<) :: (Applicative m, Monad m) => ProxyChannelT mU mD dI dO m a -> ProxyChannelT uO uI mU mD m a -> ProxyChannelT uO uI dI dO m a
 FreeT a <-< FreeT b = FreeT $ do x <- a
