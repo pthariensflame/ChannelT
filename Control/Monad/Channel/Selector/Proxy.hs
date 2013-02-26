@@ -3,7 +3,11 @@ module Control.Monad.Channel.Selector.Proxy (ProxyChannel,
                                              ProxyChannelT,
                                              runProxy,
                                              request,
+                                             await,
+                                             coyield,
                                              respond,
+                                             coawait,
+                                             yield,
                                              (>->),
                                              (<-<),
                                              ProxySelector(..)) where
@@ -29,8 +33,20 @@ runProxy (FreeT a) = FreeT $ a >>= \x -> case x of
 request :: uO -> ProxyChannel uO uI dI dO uI
 request = syncOn RequestProxy
 
+await :: ProxyChannel () uI dI dO uI
+await = request ()
+
+coyield :: uO -> ProxyChannel uO () dI dO ()
+coyield = request
+
 respond :: dO -> ProxyChannel uO uI dI dO dI
 respond = syncOn RespondProxy
+
+coawait :: ProxyChannel uO uI dI () dI
+coawait = respond ()
+
+yield :: dO -> ProxyChannel uO uI () dO ()
+yield = respond
 
 (>->) :: (Applicative m, Monad m) => ProxyChannelT uO uI mU mD m a -> ProxyChannelT mU mD dI dO m a -> ProxyChannelT uO uI dI dO m a
 FreeT a >-> FreeT b = FreeT $ do x <- a
