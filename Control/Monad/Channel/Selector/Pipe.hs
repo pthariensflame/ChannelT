@@ -23,8 +23,8 @@ data PipeSelector :: * -> * -> * -> * -> * where
 runPipe :: (Monad m) => PipeChannelT () o m a -> EmptyChannelT m a
 runPipe (FreeT a) = FreeT $ a >>= \x -> case x of
   Pure v -> return (Pure v)
-  Free (SyncChannel AwaitPipe _ i) -> runFreeT $ i ()
-  Free (SyncChannel YieldPipe _ i) -> runFreeT $ i ()
+  Free (SyncChannel AwaitPipe _ i) -> runFreeT . runPipe $ i ()
+  Free (SyncChannel YieldPipe _ i) -> runFreeT . runPipe $ i ()
 
 await :: PipeChannel i o i
 await = syncOn AwaitPipe ()

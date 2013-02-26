@@ -23,8 +23,8 @@ type ProxyChannelT uO uI dI dO m a = ChannelT (ProxySelector uO uI dI dO) m a
 runProxy :: (Monad m) => ProxyChannelT uO () () dO m a -> EmptyChannelT m a
 runProxy (FreeT a) = FreeT $ a >>= \x -> case x of
   Pure v -> return (Pure v)
-  Free (SyncChannel RequestProxy _ i) -> i ()
-  Free (SyncChannel RespondProxy _ i) -> i ()
+  Free (SyncChannel RequestProxy _ i) -> runFreeT . runProxy $ i ()
+  Free (SyncChannel RespondProxy _ i) -> runFreeT . runProxy $ i ()
 
 request :: uO -> ProxyChannel uO uI dI dO uI
 request = syncOn RequestProxy
