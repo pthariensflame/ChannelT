@@ -1,4 +1,4 @@
-{-# GADTs, RankNTypes, LiberalTypeSynonyms, FlexibleContexts, KindSignatures #-}
+{-# LANGUAGE GADTs, RankNTypes, LiberalTypeSynonyms, FlexibleContexts, KindSignatures #-}
 module Control.Monad.Channel.Selector.Proxy (ProxyChannel,
                                              ProxyChannelT,
                                              runProxy,
