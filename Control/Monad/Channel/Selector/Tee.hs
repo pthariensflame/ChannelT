@@ -40,8 +40,8 @@ yield = syncOn YieldTee
 FreeT a >@+> FreeT b = FreeT $ do x <- a
                                   y <- b
                                   case (x, y) of
-                                    (Pure _, _) -> return x
-                                    (_, Pure _) -> return y
+                                    (Pure v, _) -> return (Pure v)
+                                    (_, Pure v) -> return (Pure v)
                                     (Free (SyncChannel AwaitPipe _ iL), _) -> runFreeT $ awaitLeft >>= \v -> iL v >@+> FreeT (return y)
                                     (_, Free (SyncChannel YieldTee oO iU)) -> runFreeT $ yield oO >> (FreeT (return x) >@+> iL v)
                                     (_, Free (SyncChannel AwaitRightTee _ iR)) -> runFreeT $ awaitRight >>= \v -> FreeT (return x) >@+> iR v
@@ -51,8 +51,8 @@ FreeT a >@+> FreeT b = FreeT $ do x <- a
 FreeT a <@+< FreeT b = FreeT $ do x <- a
                                   y <- b
                                   case (x, y) of
-                                    (Pure _, _) -> return x
-                                    (_, Pure _) -> return y
+                                    (Pure v, _) -> return (Pure v)
+                                    (_, Pure v) -> return (Pure v)
                                     (Free (SyncChannel YieldTee oO iU), _) -> runFreeT $ yield oO >> (iL v <@+< FreeT (return y))
                                     (Free (SyncChannel AwaitRightTee _ iR), _) -> runFreeT $ awaitRight >>= \v -> iR v <@+< FreeT (return y)
                                     (_, Free (SyncChannel AwaitPipe _ iL)) -> runFreeT $ awaitLeft >>= \v -> FreeT (return x) <@+< iL v
@@ -62,8 +62,8 @@ FreeT a <@+< FreeT b = FreeT $ do x <- a
 FreeT a >+@> FreeT b = FreeT $ do x <- a
                                   y <- b
                                   case (x, y) of
-                                    (Pure _, _) -> return x
-                                    (_, Pure _) -> return y
+                                    (Pure v, _) -> return (Pure v)
+                                    (_, Pure v) -> return (Pure v)
                                     (Free (SyncChannel AwaitPipe _ iL), _) -> runFreeT $ awaitRight >>= \v -> iL v >+@> FreeT (return y)
                                     (_, Free (SyncChannel YieldTee oO iU)) -> runFreeT $ yield oO >> (FreeT (return x) >+@> iL v)
                                     (_, Free (SyncChannel AwaitLeftTee _ iL)) -> runFreeT $ awaitLeft >>= \v -> FreeT (return x) >+@> iL v
@@ -73,8 +73,8 @@ FreeT a >+@> FreeT b = FreeT $ do x <- a
 FreeT a <+@< FreeT b = FreeT $ do x <- a
                                   y <- b
                                   case (x, y) of
-                                    (Pure _, _) -> return x
-                                    (_, Pure _) -> return y
+                                    (Pure v, _) -> return (Pure v)
+                                    (_, Pure v) -> return (Pure v)
                                     (Free (SyncChannel YieldTee oO iU), _) -> runFreeT $ yield oO >> (iL v <+@< FreeT (return y))
                                     (Free (SyncChannel AwaitLeftTee _ iL), _) -> runFreeT $ awaitLeft >>= \v -> iL v <+@< FreeT (return y)
                                     (_, Free (SyncChannel AwaitPipe _ iL)) -> runFreeT $ awaitRight >>= \v -> FreeT (return x) <+@< iL v
@@ -83,7 +83,7 @@ FreeT a <+@< FreeT b = FreeT $ do x <- a
 
 runTee :: (Monad m) => TeeChannelT () () o m a -> EmptyChannelT m a
 runTee (FreeT a) = FreeT $ a >>= \x -> case x of
-  v@(Pure _) -> return v
+  Pure v -> return (Pure v)
   Free (SyncChannel AwaitLeftTee _ iL) -> iL () >>= (runFreeT . runTee)
   Free (SyncChannel AwaitRightTee _ iR) -> iR () >>= (runFreeT . runTee)
   Free (SyncChannel YieldTee _ iU) -> iU () >>= (runFreeT . runTee)

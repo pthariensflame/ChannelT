@@ -36,8 +36,8 @@ yield = syncOn YieldPipe
 FreeT a >+> FreeT b = FreeT $ do x <- a
                                  y <- b
                                  case (x, y) of
-                                   (Pure _, _) -> return x
-                                   (_, Pure _) -> return y
+                                   (Pure v, _) -> return (Pure v)
+                                   (_, Pure v) -> return (Pure v)
                                    (Free (SyncChannel AwaitPipe _ iX), _) -> runFreeT $ await >>= \v -> iX v >+> FreeT (return y)
                                    (_, Free (SyncChannel YieldPipe oZ iU)) -> runFreeT $ yield o >> (FreeT (return x) >+> iU ())
                                    (Free (SyncChannel YieldPipe oY iU), Free (SyncChannel AwaitPipe _ iY)) -> runFreeT $ iU () >+> iY oY
@@ -46,8 +46,8 @@ FreeT a >+> FreeT b = FreeT $ do x <- a
 FreeT a <+< FreeT b = FreeT $ do x <- a
                                  y <- b
                                  case (x, y) of
-                                   (Pure _, _) -> return x
-                                   (_, Pure _) -> return y
+                                   (Pure v, _) -> return (Pure v)
+                                   (_, Pure v) -> return (Pure v)
                                    (Free (SyncChannel YieldPipe oZ iU), _) -> runFreeT $ yield oZ >> (iU () <+< FreeT (return y))
                                    (_, Free (SyncChannel AwaitPipe _ iX)) -> runFreeT $ await >>= \v -> FreeT (return x) <+< iX v
                                    (Free (SyncChannel AwaitPipe _ iY), Free (SyncChannel YieldPipe oY iU)) -> runFreeT $ iY oY <+< iU ()

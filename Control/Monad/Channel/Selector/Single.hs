@@ -23,6 +23,6 @@ sync = syncOn Single
 FreeT a >-< FreeT b = FreeT $ do x <- a
                                  y <- b
                                  case (x, y) of
-                                   (Pure _, _) -> return x
-                                   (_, Pure _) -> return y
+                                   (Pure v, _) -> return (Pure v)
+                                   (_, Pure v) -> return (Pure v)
                                    (Free (SyncChannel Single oY iX), Free (SyncChannel Single oX iY)) -> runFreeT $ iX oX >-< iY oY
