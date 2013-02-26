@@ -39,7 +39,7 @@ FreeT a >+> FreeT b = FreeT $ do x <- a
                                    (Pure v, _) -> return (Pure v)
                                    (_, Pure v) -> return (Pure v)
                                    (Free (SyncChannel AwaitPipe _ iX), _) -> runFreeT $ await >>= \v -> iX v >+> FreeT (return y)
-                                   (_, Free (SyncChannel YieldPipe oZ iU)) -> runFreeT $ yield o >> (FreeT (return x) >+> iU ())
+                                   (_, Free (SyncChannel YieldPipe oZ iU)) -> runFreeT $ yield oZ >> (FreeT (return x) >+> iU ())
                                    (Free (SyncChannel YieldPipe oY iU), Free (SyncChannel AwaitPipe _ iY)) -> runFreeT $ iU () >+> iY oY
 
 (<+<) :: (Monad m) => PipeChannelT y z m a -> PipeChannelT x y m a -> PipeChannelT x z m a
