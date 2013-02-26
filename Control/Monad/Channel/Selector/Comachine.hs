@@ -15,7 +15,7 @@ import Control.Monad.Channel.Selector.Pipe hiding (await, yield)
 import qualified Control.Monad.Channel.Selector.Pipe as CMCSP (await, yield)
 import Control.Monad.Trans.Free (FreeT(..), FreeF(..))
 import Control.Applicative
-import Control.Category (Catogory(id))
+import Control.Category (Category(id))
 
 data ComachineSelector :: * -> (* -> *) -> * -> * -> * where
   AwaitComachine :: ComachineSelector i kO i ()
