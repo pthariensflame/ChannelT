@@ -81,7 +81,7 @@ FreeT a <+&< FreeT b = FreeT $ do x <- a
                                   y <- b
                                   case (x, y) of
                                     (Pure v, _) -> return (Pure v)
-                                    (_, Pure ) -> return (Pure v)
+                                    (_, Pure v) -> return (Pure v)
                                     (Free (SyncChannel YieldWye oO iU), _) -> runFreeT $ yield oO >> (iU () <+&< FreeT (return y))
                                     (Free (SyncChannel AwaitLeftWye _ iL), _) -> runFreeT $ awaitLeft >>= \v -> iL v <+&< FreeT (return y)
                                     (_, Free (SyncChannel AwaitPipe _ iL)) -> runFreeT $ awaitRight >>= \v -> FreeT (return x) <+&< iL v
