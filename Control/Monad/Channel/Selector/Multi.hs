@@ -1,3 +1,4 @@
+{-# LANGUAGE GADTs, KindSignatures, RankNTypes, MultiParamTypeClasses, FunctionalDependencies, LiberalTypeSynonyms, FlexibleContexts #-}
 module Control.Monad.Channel.Selector.Multi () where
 import Control.Monad.Channel
 import Control.Monad.Channel.Selector.Empty
