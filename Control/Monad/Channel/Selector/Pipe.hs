@@ -16,7 +16,7 @@ type PipeChannel i o a = Channel (PipeSelector i o) a
 
 type PipeChannelT i o m a = ChannelT (PipeSelector i o) m a
 
-data PipeSelector :: * -> * -> * -> * where
+data PipeSelector :: * -> * -> * -> * -> * where
   AwaitPipe :: PipeSelector i o i ()
   YieldPipe :: PipeSelector i o () o
 
