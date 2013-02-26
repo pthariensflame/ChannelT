@@ -1,4 +1,4 @@
-{-# LANGUAGE GADTs, KindSignatures, RankNTypes, LiberalTypeSynonyms, FlexibleContexts #-}
+{-# LANGUAGE GADTs, RankNTypes, LiberalTypeSynonyms, FlexibleContexts, KindSignatures #-}
 module Control.Monad.Channel.Selector.Pipe (PipeChannel,
                                             PipeChannelT,
                                             runPipe,
