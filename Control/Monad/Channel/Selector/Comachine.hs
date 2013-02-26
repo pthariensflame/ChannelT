@@ -50,7 +50,7 @@ FreeT a <&< FreeT b = FreeT $ do x <- a
                                  case (x, y) of
                                    (Pure v, _) -> return (Pure v)
                                    (_, Pure v) -> return (Pure v)
-                                   (Free (SyncChannel (YieldOnComachine k) oK iU), _) -> runFreeT $ yieldOn k oK >> (iU () <&< FreeT (return x))
+                                   (Free (SyncChannel (YieldOnComachine k) oK iU), _) -> runFreeT $ yieldOn k oK >> (iU () <&< FreeT (return y))
                                    (_, Free (SyncChannel AwaitPipe _ iI)) -> runFreeT $ await >>= \v -> FreeT (return x) <&< iI v
                                    (Free (SyncChannel AwaitComachine _ iQ), Free (SyncChannel YieldPipe oQ iU)) -> runFreeT $ iQ oQ <&< iU ()
 
