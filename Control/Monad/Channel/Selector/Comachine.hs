@@ -4,8 +4,8 @@ module Control.Monad.Channel.Selector.Comachine (ComachineChannel,
                                                  await,
                                                  yieldOn,
                                                  yield,
-                                                 >&>,
-                                                 <&<,
+                                                 (>&>),
+                                                 (<&<),
                                                  runComachine,
                                                  ComachineSelector(..)) where
 import Prelude hiding (id)
