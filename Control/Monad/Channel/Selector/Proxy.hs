@@ -32,7 +32,7 @@ request = syncOn RequestProxy
 respond :: dO -> ProxyChannel uO uI dI dO dI
 respond = syncOn RespondProxy
 
-(>->) :: (Monad m) => ProxyChannelT uO uI mU mD m a -> ProxyChannelT mU mD dI dO m a -> ProxyChannelT uO uI dI dO m a
+(>->) :: (Applicative m, Monad m) => ProxyChannelT uO uI mU mD m a -> ProxyChannelT mU mD dI dO m a -> ProxyChannelT uO uI dI dO m a
 FreeT a >-> FreeT b = FreeT $ do x <- a
                                  y <- b
                                  case (x, y) of
@@ -42,7 +42,7 @@ FreeT a >-> FreeT b = FreeT $ do x <- a
                                    (_, Free (SyncChannel RespondProxy oDO iDI)) -> runFreeT $ respond oDO >>= \v -> FreeT (return x) >-> iDI v
                                    (Free (SyncChannel RespondProxy oMD iMU), Free (SyncChannel RequestProxy oMU, iMD)) -> runFreeT $ iMU oMU >-> iMD oMD
 
-(<-<) :: (Monad m) => ProxyChannelT mU mD dI dO m a -> ProxyChannelT uO uI mU mD m a -> ProxyChannelT uO uI dI dO m a
+(<-<) :: (Applicative m, Monad m) => ProxyChannelT mU mD dI dO m a -> ProxyChannelT uO uI mU mD m a -> ProxyChannelT uO uI dI dO m a
 FreeT a <-< FreeT b = FreeT $ do x <- a
                                  y <- b
                                  case (x, y) of

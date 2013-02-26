@@ -32,7 +32,7 @@ await = syncOn AwaitPipe ()
 yield :: o -> PipeChannel i o ()
 yield = syncOn YieldPipe
 
-(>+>) :: (Monad m) => PipeChannelT x y m a -> PipeChannelT y z m a -> PipeChannelT x z m a
+(>+>) :: (Applicative m, Monad m) => PipeChannelT x y m a -> PipeChannelT y z m a -> PipeChannelT x z m a
 FreeT a >+> FreeT b = FreeT $ do x <- a
                                  y <- b
                                  case (x, y) of
@@ -42,7 +42,7 @@ FreeT a >+> FreeT b = FreeT $ do x <- a
                                    (_, Free (SyncChannel YieldPipe oZ iU)) -> runFreeT $ yield oZ >> (FreeT (return x) >+> iU ())
                                    (Free (SyncChannel YieldPipe oY iU), Free (SyncChannel AwaitPipe _ iY)) -> runFreeT $ iU () >+> iY oY
 
-(<+<) :: (Monad m) => PipeChannelT y z m a -> PipeChannelT x y m a -> PipeChannelT x z m a
+(<+<) :: (Applicative m, Monad m) => PipeChannelT y z m a -> PipeChannelT x y m a -> PipeChannelT x z m a
 FreeT a <+< FreeT b = FreeT $ do x <- a
                                  y <- b
                                  case (x, y) of
