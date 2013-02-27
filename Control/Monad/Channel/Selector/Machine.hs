@@ -58,5 +58,5 @@ FreeT a <@< FreeT b = FreeT $ do x <- a
 runMachine :: (Monad m) => MachineChannelT KUnit o m a -> m a
 runMachine (FreeT a) = a >>= \x -> case x of
   Pure v -> return v
-  Free (SyncChannel (AwaitOnMachine _) _ iK) -> runMachine $ iK ()
+  Free (SyncChannel (AwaitOnMachine KUnit) _ iK) -> runMachine $ iK ()
   Free (SyncChannel YieldMachine _ iU) -> runMachine $ iU ()
