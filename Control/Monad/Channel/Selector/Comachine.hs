@@ -54,8 +54,8 @@ FreeT a <&< FreeT b = FreeT $ do x <- a
                                    (_, Free (SyncChannel AwaitPipe _ iI)) -> runFreeT $ await >>= \v -> FreeT (return x) <&< iI v
                                    (Free (SyncChannel AwaitComachine _ iQ), Free (SyncChannel YieldPipe oQ iU)) -> runFreeT $ iQ oQ <&< iU ()
 
-runComachine :: (Monad m) => ComachineChannelT () kO m a -> m a
-runComachine (FreeT a) = a >>= \x -> case x of
-  Pure v -> return v
+runComachine :: (Monad m) => ComachineChannelT () kO m a -> EmptyChannelT m a
+runComachine (FreeT a) = FreeT $ a >>= \x -> case x of
+  Pure v -> return (Pure v)
   Free (SyncChannel AwaitComachine _ iI) -> runComachine $ iI () 
   Free (SyncChannel (YieldOnComachine _) _ iU) -> runComachine $ iU ()

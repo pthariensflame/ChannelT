@@ -35,8 +35,8 @@ yieldOn k = syncOn (YieldOnDimachine k)
 yield :: (Category c) => o -> DimachineChannel kI (c o) ()
 yield = yieldOn id
 
-runDimachine :: (Monad m) => DimachineChannelT KUnit kO m a -> m a
-runDimachine (FreeT a) = a >>= \x -> case x of
-  Pure v -> return v
+runDimachine :: (Monad m) => DimachineChannelT KUnit kO m a -> EmptyChannelT m a
+runDimachine (FreeT a) = FreeT $ a >>= \x -> case x of
+  Pure v -> return (Pure v)
   Free (SyncChannel (AwaitOnDimachine KUnit) _ iK) -> runDimachine $ iK ()
   Free (SyncChannel (YieldOnDimachine _) _ iU) -> runDimachine $ iU ()
