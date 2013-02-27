@@ -23,7 +23,7 @@ data ComachineSelector :: * -> (* -> *) -> * -> * -> * where
 
 type ComachineChannel i kO a = Channel (ComachineSelector i kO) a
 
-type ComachineChannelT i kO m a= ChannelT (ComachineSelector i kO) m a
+type ComachineChannelT i kO m a = ChannelT (ComachineSelector i kO) m a
 
 await :: ComachineChannel i kO i
 await = syncOn AwaitComachine ()
