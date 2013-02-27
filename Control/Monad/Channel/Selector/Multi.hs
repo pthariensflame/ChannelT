@@ -23,4 +23,4 @@ sync s = syncOn (SyncMulti s)
 liftS :: (Functor m) => MultiChannelT sels m a -> MultiChannelT (sel ': sels) m a
 liftS (FreeT a) = FreeT $ fmap (\x -> case x of
                                    Pure v -> Pure v
-                                   Free (SyncChannel s o i) -> Free (SyncChannel (LiftSMulti s) o i)) a
+                                   Free (SyncChannel s o i) -> Free (SyncChannel (LiftSMulti s) o (liftS . i))) a
