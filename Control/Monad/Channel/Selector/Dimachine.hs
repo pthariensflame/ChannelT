@@ -38,5 +38,5 @@ yield = yieldOn id
 runDimachine :: (Monad m) => DimachineChannelT KUnit kO m a -> EmptyChannelT m a
 runDimachine (FreeT a) = FreeT $ a >>= \x -> case x of
   Pure v -> return (Pure v)
-  Free (SyncChannel (AwaitOnDimachine KUnit) _ iK) -> runDimachine $ iK ()
-  Free (SyncChannel (YieldOnDimachine _) _ iU) -> runDimachine $ iU ()
+  Free (SyncChannel (AwaitOnDimachine KUnit) _ iK) -> runFreeT . runDimachine $ iK ()
+  Free (SyncChannel (YieldOnDimachine _) _ iU) -> runFreeT . runDimachine $ iU ()

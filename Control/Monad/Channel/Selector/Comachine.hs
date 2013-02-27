@@ -57,5 +57,5 @@ FreeT a <&< FreeT b = FreeT $ do x <- a
 runComachine :: (Monad m) => ComachineChannelT () kO m a -> EmptyChannelT m a
 runComachine (FreeT a) = FreeT $ a >>= \x -> case x of
   Pure v -> return (Pure v)
-  Free (SyncChannel AwaitComachine _ iI) -> runComachine $ iI () 
-  Free (SyncChannel (YieldOnComachine _) _ iU) -> runComachine $ iU ()
+  Free (SyncChannel AwaitComachine _ iI) -> runFreeT . runComachine $ iI () 
+  Free (SyncChannel (YieldOnComachine _) _ iU) -> runFreeT . runComachine $ iU ()
