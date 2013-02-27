@@ -52,7 +52,7 @@ library
                        Control.Monad.Channel.Selector.Tee,
                        Control.Monad.Channel.Selector.Machine,
                        Control.Monad.Channel.Selector.Comachine,
-                       -- Control.Monad.Channel.Selector.Dimachine,
+                       Control.Monad.Channel.Selector.Dimachine,
                        -- Control.Monad.Channel.Selector.Multi
                        Data.KUnit
   
