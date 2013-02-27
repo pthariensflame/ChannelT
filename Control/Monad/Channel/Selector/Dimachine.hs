@@ -24,10 +24,13 @@ type DimachineChannel kI kO a = Channel (DimachineSelector kI kO) a
 type DimachineChannelT kI kO m a = ChannelT (DimachineSelector kI kO) m a
 
 awaitOn :: DimachineChannel kI kO i
-awaitOn = (`syncOn` ()) . AwaitOnDimachine
+awaitOn k = syncOn (AwaitOnDimachine k) ()
 
 await :: (Category c) => DimachineChannel (c i) kO i
 await = awaitOn id
+
+yieldOn :: kO o -> o -> DimachineChannel kI kO ()
+yieldOn k = syncOn (YieldOnDimachine k)
 
 yield :: (Category c) => o -> DimachineChannel kI (c o) ()
 yield = yieldOn id

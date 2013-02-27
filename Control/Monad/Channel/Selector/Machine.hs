@@ -27,7 +27,7 @@ type MachineChannel kI o a = Channel (MachineSelector kI o) a
 type MachineChannelT kI o m a = ChannelT (MachineSelector kI o) m a
 
 awaitOn :: MachineChannel kI o i
-awaitOn = (`syncOn` ()) . AwaitOnMachine
+awaitOn = syncOn (AwaitOnMachine k) ()
 
 await :: (Category c) => MachineChannel (c i) o i
 await = awaitOn id
