@@ -18,7 +18,7 @@ import Control.Applicative
 import Control.Category (Category(id))
 import Data.KUnit
 
-data MachineSelector :: * -> (* -> *) -> * -> * -> * where
+data MachineSelector :: (* -> *) -> * -> * -> * -> * where
   AwaitOnMachine :: kI i -> MachineSelector kI o i ()
   YieldMachine :: MachineSelector kI o () o
 

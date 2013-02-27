@@ -15,7 +15,7 @@ import Control.Applicative
 import Control.Category (Category(id))
 import Data.KUnit
 
-data DimachineSelector :: * -> (* -> *) -> * -> * -> * where
+data DimachineSelector :: (* -> *) -> (* -> *) -> * -> * -> * where
   AwaitOnDimachine :: kI i -> DimachineSelector kI kO i ()
   YieldOnDimachine :: kO o -> DimachineSelector kI kO () o
 
