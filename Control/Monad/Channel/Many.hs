@@ -16,6 +16,12 @@ import Control.Monad.Channel.Selector.Wye (WyeSelector(..))
 import Control.Monad.Identity
 import Control.Monad.Trans.Free (FreeT(..), FreeF(..))
 
+type family Interleave (xs :: [* -> * -> *]) (ys :: [* -> * -> *]) :: [* -> * -> *]
+type instance Interleave '[] '[] = '[]
+type instance Interleave (x ': xs) '[] = x ': xs
+type instance Interleave '[] (y ': ys) = y ': ys
+type instance Interleave (x ': xs) (y ': ys) = x ': (y ': (Interleave xs ys))
+
 type Channels sels a = MultiChannel sels a
 
 runChannels :: ChannelsT '[] Identity a -> a
@@ -30,12 +36,6 @@ type (:~>) = SingleSelector
 
 sync :: o -> Channels ((i :~> o) ': sels) i
 sync = syncWith SyncSingle
-
-type family Interleave (xs :: [* -> * -> *]) (ys :: [* -> * -> *]) :: [* -> * -> *]
-type instance Interleave '[] '[] = '[]
-type instance Interleave (x ': xs) '[] = x ': xs
-type instance Interleave '[] (y ': ys) = y ': ys
-type instance Interleave (x ': xs) (y ': ys) = x ': (y ': (Interleave xs ys))
 
 infixl 7 >+<
 (>+<) :: (Monad m) => ChannelsT ((SingleSelector x y) ': sels1) m a -> ChannelsT ((SingleSelector y x) ': sels2) m a -> ChannelsT (Interleave sels1 sels2) m a 
