@@ -20,7 +20,7 @@ type MultiChannel sels a = Channel (MultiSelector sels) a
 type MultiChannelT sels = ChannelT (MultiSelector sels)
 
 syncWith :: sel i o -> o -> MultiChannel (sel ': sels) i
-syncWith = syncOn . SyncMulti
+syncWith = syncOn . SyncWithMulti
 
 liftS :: (Functor m) => MultiChannelT sels m a -> MultiChannelT (sel ': sels) m a
 liftS (FreeT a) = FreeT $ fmap (\x -> case x of
