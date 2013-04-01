@@ -4,7 +4,7 @@ module Control.Monad.Channel.Many (module Control.Monad.Channel,
                                    runChannels,
                                    ChannelsT,
                                    runChannelsT,
-                                   (|~>),
+                                   (:~>),
                                    sync,
                                    liftS,
                                    (>+<)) where
@@ -26,9 +26,9 @@ type ChannelsT sels = MultiChannelT sels
 runChannelsT :: (Functor m) => ChannelsT '[] m a -> m a
 runChannelsT = runChannelT . runMulti
 
-type (>~) = SingleSelector
+type (:~>) = SingleSelector
 
-sync :: o -> Channels ((i >~ o) ': sels) i
+sync :: o -> Channels ((i :~> o) ': sels) i
 sync = syncWith SyncSingle
 
 type family Interleave (xs :: [* -> * -> *]) (ys :: [* -> * -> *]) :: [* -> * -> *]
