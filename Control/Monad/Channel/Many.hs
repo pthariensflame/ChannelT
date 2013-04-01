@@ -31,14 +31,12 @@ type (:~>) = SingleSelector
 sync :: o -> Channels ((i :~> o) ': sels) i
 sync = syncWith SyncSingle
 
-type family Interleave (xs :: [* -> * -> *]) (ys :: [* -> * -> *]) :: [* -> * -> *]
-type instance Interleave '[] '[] = '[]
-type instance Interleave (x ': xs) '[] = x ': xs
-type instance Interleave '[] (y ': ys) = y ': ys
-type instance Interleave (x ': xs) (y ': ys) = x ': (y ': (Interleave xs ys))
+type family Append (xs :: [* -> * -> *]) (ys :: [* -> * -> *]) :: [* -> * -> *]
+type instance Append '[] ys = ys
+type instance Append (x ': xs) ys = x ': (Append xs ys)
 
 infixl 7 >+<
-(>+<) :: (Monad m) => ChannelsT ((SingleSelector x y) ': sels1) m a -> ChannelsT ((SingleSelector y x) ': sels2) m a -> ChannelsT (Interleave sels1 sels2) m a 
+(>+<) :: (Applicative m, Monad m) => ChannelsT ((SingleSelector x y) ': sels1) m a -> ChannelsT ((SingleSelector y x) ': sels2) m a -> ChannelsT (Append sels1 sels2) m a
 FreeT a >+< FreeT b = FreeT $ do x <- a
                                  y <- b
                                  case (x, y) of
