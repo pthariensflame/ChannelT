@@ -26,9 +26,9 @@ type ChannelsT sels = MultiChannelT sels
 runChannelsT :: (Functor m) => ChannelsT '[] m a -> m a
 runChannelsT = runChannelT . runMulti
 
-type i |~> o = SingleSelector i o
+type (>~) = SingleSelector
 
-sync :: o -> Channels ((i |~> o) ': sels) i
+sync :: o -> Channels ((i >~ o) ': sels) i
 sync = syncWith SyncSingle
 
 type family Interleave (xs :: [* -> * -> *]) (ys :: [* -> * -> *]) :: [* -> * -> *]
