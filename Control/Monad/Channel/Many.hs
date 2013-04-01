@@ -26,7 +26,7 @@ type ChannelsT sels = MultiChannelT sels
 runChannelsT :: (Functor m) => ChannelsT '[] m a -> m a
 runChannelsT = runChannelT . runMulti
 
-type (|~>) = SingleSelector
+type i |~> o = SingleSelector i o
 
 sync :: o -> Channels ((i |~> o) ': sels) i
 sync = syncWith SyncSingle
