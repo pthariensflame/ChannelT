@@ -44,6 +44,6 @@ FreeT a >+< FreeT b = FreeT $ do x <- a
                                  case (x, y) of
                                    (Pure v, _) -> Pure v
                                    (_, Pure v) -> Pure v
-                                   (Free (SyncChannel (LiftSMulti s) o i), _) -> runFreeT $ liftS (syncOn s o) >>= \v -> i v >+< FreeT (return b)
-                                   (_, Free (SyncChannel (LiftSMulti s) o i)) -> runFreeT $ liftS (liftS (syncOn s o)) >>= \v -> FreeT (return a) >+< i v
+                                   (Free (SyncChannel (LiftSMulti s) o i), _) -> runFreeT $ liftS (syncOn s o) >>= \v -> i v >+< FreeT (return y)
+                                   (_, Free (SyncChannel (LiftSMulti s) o i)) -> runFreeT $ liftS (liftS (syncOn s o)) >>= \v -> FreeT (return x) >+< i v
                                    (Free (SyncChannel (SyncWithMulti SyncSingle) oY iX), Free (SyncChannel (SyncWithMulti SyncSingle) oX iY)) -> runFreeT $ iX oX >+< iY oY
