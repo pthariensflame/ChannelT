@@ -15,6 +15,7 @@ import Control.Monad.Channel.Selector.Tee (TeeSelector(..))
 import Control.Monad.Channel.Selector.Wye (WyeSelector(..))
 import Control.Monad.Identity
 import Control.Monad.Trans.Free (FreeT(..), FreeF(..))
+import Control.Applicative
 
 type Channels sels a = MultiChannel sels a
 
