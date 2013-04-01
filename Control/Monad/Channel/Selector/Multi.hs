@@ -7,7 +7,6 @@ module Control.Monad.Channel.Selector.Multi (MultiChannel,
 import Control.Monad.Channel
 import Control.Monad.Channel.Selector.Empty
 import Control.Monad.Trans.Free (FreeT(..), FreeF(..))
-import Control.Applicative
 
 data MultiSelector :: [* -> * -> *] -> * -> * -> * where
   SyncMulti :: sel i o -> MultiSelector (sel ': sels) i o
