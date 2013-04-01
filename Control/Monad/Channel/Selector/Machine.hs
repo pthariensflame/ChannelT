@@ -24,7 +24,7 @@ data MachineSelector :: (* -> *) -> * -> * -> * -> * where
 
 type MachineChannel kI o a = Channel (MachineSelector kI o) a
 
-type MachineChannelT kI o m a = ChannelT (MachineSelector kI o) m a
+type MachineChannelT kI o = ChannelT (MachineSelector kI o)
 
 awaitOn :: kI i -> MachineChannel kI o i
 awaitOn k = syncOn (AwaitOnMachine k) ()
@@ -35,6 +35,7 @@ await = awaitOn id
 yield :: o -> MachineChannel kI o ()
 yield = syncOn YieldMachine
 
+infixl 7 >@>
 (>@>) :: (Applicative m, Monad m) => MachineChannelT kI q m a -> PipeChannelT q o m a -> MachineChannelT kI o m a
 FreeT a >@> FreeT b = FreeT $ do x <- a
                                  y <- b
@@ -45,6 +46,7 @@ FreeT a >@> FreeT b = FreeT $ do x <- a
                                    (_, Free (SyncChannel YieldPipe oO iU)) -> runFreeT $ yield oO >> (FreeT (return x) >@> iU ())
                                    (Free (SyncChannel YieldMachine oQ iU), Free (SyncChannel AwaitPipe _ iQ)) -> runFreeT $ iU () >@> iQ oQ
 
+infixl 7 <@<
 (<@<) :: (Applicative m, Monad m) => PipeChannelT q o m a -> MachineChannelT kI q m a -> MachineChannelT kI o m a
 FreeT a <@< FreeT b = FreeT $ do x <- a
                                  y <- b

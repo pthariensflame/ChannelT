@@ -23,7 +23,7 @@ data ComachineSelector :: * -> (* -> *) -> * -> * -> * where
 
 type ComachineChannel i kO a = Channel (ComachineSelector i kO) a
 
-type ComachineChannelT i kO m a = ChannelT (ComachineSelector i kO) m a
+type ComachineChannelT i kO = ChannelT (ComachineSelector i kO)
 
 await :: ComachineChannel i kO i
 await = syncOn AwaitComachine ()
@@ -34,6 +34,7 @@ yieldOn = syncOn . YieldOnComachine
 yield :: (Category c) => o -> ComachineChannel i (c o) ()
 yield = yieldOn id
 
+infixl 7 >&>
 (>&>) :: (Applicative m, Monad m) => PipeChannelT i q m a -> ComachineChannelT q kO m a -> ComachineChannelT i kO m a
 FreeT a >&> FreeT b = FreeT $ do x <- a
                                  y <- b
@@ -44,6 +45,7 @@ FreeT a >&> FreeT b = FreeT $ do x <- a
                                    (_, Free (SyncChannel (YieldOnComachine k) oK iU)) -> runFreeT $ yieldOn k oK >> (FreeT (return x) >&> iU ())
                                    (Free (SyncChannel YieldPipe oQ iU), Free (SyncChannel AwaitComachine _ iQ)) -> runFreeT $ iU () >&> iQ oQ
 
+infixl 7 <&<
 (<&<) :: (Applicative m, Monad m) => ComachineChannelT q kO m a -> PipeChannelT i q m a -> ComachineChannelT i kO m a
 FreeT a <&< FreeT b = FreeT $ do x <- a
                                  y <- b

@@ -14,7 +14,6 @@ module Control.Monad.Channel.Selector.Wye (WyeChannel,
 import Control.Monad.Channel
 import Control.Monad.Channel.Selector.Empty
 import Control.Monad.Channel.Selector.Pipe hiding (yield)
-import qualified Control.Monad.Channel.Selector.Pipe as CMCSP (yield)
 import Control.Monad.Trans.Free (FreeT(..), FreeF(..))
 import Control.Applicative
 
@@ -26,7 +25,7 @@ data WyeSelector :: * -> * -> * -> * -> * -> * where
 
 type WyeChannel iL iR o a = Channel (WyeSelector iL iR o) a
 
-type WyeChannelT iL iR o m a = ChannelT (WyeSelector iL iR o) m a
+type WyeChannelT iL iR o = ChannelT (WyeSelector iL iR o)
 
 awaitLeft :: WyeChannel iL iR o iL
 awaitLeft = syncOn AwaitLeftWye ()
@@ -40,6 +39,7 @@ awaitWye = syncOn AwaitWyeWye ()
 yield :: o -> WyeChannel iL iR o ()
 yield = syncOn YieldWye
 
+infixl 7 >&+>
 (>&+>) :: (Applicative m, Monad m) => PipeChannelT iL mL m a -> WyeChannelT mL iR o m a -> WyeChannelT iL iR o m a
 FreeT a >&+> FreeT b = FreeT $ do x <- a
                                   y <- b
@@ -52,6 +52,7 @@ FreeT a >&+> FreeT b = FreeT $ do x <- a
                                     (Free (SyncChannel YieldPipe oM iU), Free (SyncChannel AwaitLeftWye _ iM)) -> runFreeT $ iU () >&+> iM oM
                                     (Free (SyncChannel YieldPipe oM iU), Free (SyncChannel AwaitWyeWye _ iE)) -> runFreeT $ iU () >&+> iE (Left oM)
 
+infixl 7 <&+<
 (<&+<) :: (Applicative m, Monad m) => WyeChannelT mL iR o m a -> PipeChannelT iL mL m a -> WyeChannelT iL iR o m a
 FreeT a <&+< FreeT b = FreeT $ do x <- a
                                   y <- b
@@ -64,6 +65,7 @@ FreeT a <&+< FreeT b = FreeT $ do x <- a
                                     (Free (SyncChannel AwaitLeftWye _ iM), Free (SyncChannel YieldPipe oM iU)) -> runFreeT $ iM oM <&+< iU ()
                                     (Free (SyncChannel AwaitWyeWye _ iE), Free (SyncChannel YieldPipe oM iU)) -> runFreeT $ iE (Left oM) <&+< iU ()
 
+infixl 7 >+&>
 (>+&>) :: (Applicative m, Monad m) => PipeChannelT iR mR m a -> WyeChannelT iL mR o m a -> WyeChannelT iL iR o m a
 FreeT a >+&> FreeT b = FreeT $ do x <- a
                                   y <- b
@@ -76,6 +78,7 @@ FreeT a >+&> FreeT b = FreeT $ do x <- a
                                     (Free (SyncChannel YieldPipe oM iU), Free (SyncChannel AwaitRightWye _ iM)) -> runFreeT $ iU () >+&> iM oM
                                     (Free (SyncChannel YieldPipe oM iU), Free (SyncChannel AwaitWyeWye _ iE)) -> runFreeT $ iU () >+&> iE (Right oM)
 
+infixl 7 <+&<
 (<+&<) :: (Applicative m, Monad m) => WyeChannelT iL mR o m a -> PipeChannelT iR mR m a -> WyeChannelT iL iR o m a
 FreeT a <+&< FreeT b = FreeT $ do x <- a
                                   y <- b

@@ -13,7 +13,6 @@ module Control.Monad.Channel.Selector.Tee (TeeChannel,
 import Control.Monad.Channel
 import Control.Monad.Channel.Selector.Empty
 import Control.Monad.Channel.Selector.Pipe hiding (yield)
-import qualified Control.Monad.Channel.Selector.Pipe as CMCSP (yield)
 import Control.Monad.Trans.Free (FreeT(..), FreeF(..))
 import Control.Applicative
 
@@ -24,7 +23,7 @@ data TeeSelector :: * -> * -> * -> * -> * -> * where
 
 type TeeChannel iL iR o a = Channel (TeeSelector iL iR o) a
 
-type TeeChannelT iL iR o m a= ChannelT (TeeSelector iL iR o) m a
+type TeeChannelT iL iR o = ChannelT (TeeSelector iL iR o)
 
 awaitLeft :: TeeChannel iL iR o iL
 awaitLeft = syncOn AwaitLeftTee ()
@@ -35,6 +34,7 @@ awaitRight = syncOn AwaitRightTee ()
 yield :: o -> TeeChannel iL iR o ()
 yield = syncOn YieldTee
 
+infixl 7 >@+>
 (>@+>) :: (Applicative m, Monad m) => PipeChannelT iL mL m a -> TeeChannelT mL iR o m a -> TeeChannelT iL iR o m a
 FreeT a >@+> FreeT b = FreeT $ do x <- a
                                   y <- b
@@ -46,6 +46,7 @@ FreeT a >@+> FreeT b = FreeT $ do x <- a
                                     (_, Free (SyncChannel AwaitRightTee _ iR)) -> runFreeT $ awaitRight >>= \v -> FreeT (return x) >@+> iR v
                                     (Free (SyncChannel YieldPipe oM iU), Free (SyncChannel AwaitLeftTee _ iM)) -> runFreeT $ iU () >@+> iM oM
 
+infixl 7 <@+<
 (<@+<) :: (Applicative m, Monad m) => TeeChannelT mL iR o m a -> PipeChannelT iL mL m a -> TeeChannelT iL iR o m a
 FreeT a <@+< FreeT b = FreeT $ do x <- a
                                   y <- b
@@ -57,6 +58,7 @@ FreeT a <@+< FreeT b = FreeT $ do x <- a
                                     (_, Free (SyncChannel AwaitPipe _ iL)) -> runFreeT $ awaitLeft >>= \v -> FreeT (return x) <@+< iL v
                                     (Free (SyncChannel AwaitLeftTee _ iM), Free (SyncChannel YieldPipe oM iU)) -> runFreeT $ iM oM <@+< iU ()
 
+infixl 7 >+@>
 (>+@>) :: (Applicative m, Monad m) => PipeChannelT iR mR m a -> TeeChannelT iL mR o m a -> TeeChannelT iL iR o m a
 FreeT a >+@> FreeT b = FreeT $ do x <- a
                                   y <- b
@@ -68,6 +70,7 @@ FreeT a >+@> FreeT b = FreeT $ do x <- a
                                     (_, Free (SyncChannel AwaitLeftTee _ iL)) -> runFreeT $ awaitLeft >>= \v -> FreeT (return x) >+@> iL v
                                     (Free (SyncChannel YieldPipe oM iU), Free (SyncChannel AwaitRightTee _ iM)) -> runFreeT $ iU () >+@> iM oM
 
+infixl 7 <+@<
 (<+@<) :: (Applicative m, Monad m) => TeeChannelT iL mR o m a -> PipeChannelT iR mR m a -> TeeChannelT iL iR o m a
 FreeT a <+@< FreeT b = FreeT $ do x <- a
                                   y <- b

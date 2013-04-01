@@ -41,7 +41,9 @@ cabal-version:       >= 1.8
 
 library
   -- Modules exported by the library.
-  exposed-modules:     Control.Monad.Channel,
+  exposed-modules:     Data.KUnit,
+                       Control.Monad.Channel,
+                       Control.Monad.Channel.Many,
                        Control.Monad.Trans.Channel,
                        Control.Monad.Channel.Class,
                        Control.Monad.Channel.Selector.Empty,
@@ -54,7 +56,6 @@ library
                        Control.Monad.Channel.Selector.Comachine,
                        Control.Monad.Channel.Selector.Dimachine,
                        Control.Monad.Channel.Selector.Multi
-                       Data.KUnit
   
   -- Modules included in this library but not exported.
   -- other-modules:       

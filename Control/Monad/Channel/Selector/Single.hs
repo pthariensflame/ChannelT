@@ -11,18 +11,19 @@ import Control.Applicative
 
 type SingleChannel i o a = Channel (SingleSelector i o) a
 
-type SingleChannelT i o m a = ChannelT (SingleSelector i o) m a
+type SingleChannelT i o = ChannelT (SingleSelector i o)
 
 data SingleSelector :: * -> * -> * -> * -> * where
-  Single :: SingleSelector i o i o
+  SyncSingle :: SingleSelector i o i o
 
 sync :: o -> SingleChannel i o i
-sync = syncOn Single
+sync = syncOn SyncSingle
 
+infixl 7 >-<
 (>-<) :: (Monad m) => ChannelT (SingleSelector x y) m a -> ChannelT (SingleSelector y x) m a -> EmptyChannelT m a
 FreeT a >-< FreeT b = FreeT $ do x <- a
                                  y <- b
                                  case (x, y) of
                                    (Pure v, _) -> return (Pure v)
                                    (_, Pure v) -> return (Pure v)
-                                   (Free (SyncChannel Single oY iX), Free (SyncChannel Single oX iY)) -> runFreeT $ iX oX >-< iY oY
+                                   (Free (SyncChannel SyncSingle oY iX), Free (SyncChannel SyncSingle oX iY)) -> runFreeT $ iX oX >-< iY oY

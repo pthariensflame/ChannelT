@@ -22,7 +22,7 @@ data ProxySelector :: * -> * -> * -> * -> * -> * -> * where
 
 type ProxyChannel uO uI dI dO a = Channel (ProxySelector uO uI dI dO) a
 
-type ProxyChannelT uO uI dI dO m a = ChannelT (ProxySelector uO uI dI dO) m a
+type ProxyChannelT uO uI dI dO = ChannelT (ProxySelector uO uI dI dO)
 
 runProxy :: (Monad m) => ProxyChannelT uO () () dO m a -> EmptyChannelT m a
 runProxy (FreeT a) = FreeT $ a >>= \x -> case x of
@@ -48,6 +48,7 @@ coawait = respond ()
 yield :: dO -> ProxyChannel uO uI () dO ()
 yield = respond
 
+infixl 7 >->
 (>->) :: (Applicative m, Monad m) => ProxyChannelT uO uI mU mD m a -> ProxyChannelT mU mD dI dO m a -> ProxyChannelT uO uI dI dO m a
 FreeT a >-> FreeT b = FreeT $ do x <- a
                                  y <- b
@@ -58,6 +59,7 @@ FreeT a >-> FreeT b = FreeT $ do x <- a
                                    (_, Free (SyncChannel RespondProxy oDO iDI)) -> runFreeT $ respond oDO >>= \v -> FreeT (return x) >-> iDI v
                                    (Free (SyncChannel RespondProxy oMD iMU), Free (SyncChannel RequestProxy oMU iMD)) -> runFreeT $ iMU oMU >-> iMD oMD
 
+infixl 7 <-<
 (<-<) :: (Applicative m, Monad m) => ProxyChannelT mU mD dI dO m a -> ProxyChannelT uO uI mU mD m a -> ProxyChannelT uO uI dI dO m a
 FreeT a <-< FreeT b = FreeT $ do x <- a
                                  y <- b

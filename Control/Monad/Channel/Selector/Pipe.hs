@@ -14,7 +14,7 @@ import Control.Applicative
 
 type PipeChannel i o a = Channel (PipeSelector i o) a
 
-type PipeChannelT i o m a = ChannelT (PipeSelector i o) m a
+type PipeChannelT i o = ChannelT (PipeSelector i o)
 
 data PipeSelector :: * -> * -> * -> * -> * where
   AwaitPipe :: PipeSelector i o i ()
@@ -32,6 +32,7 @@ await = syncOn AwaitPipe ()
 yield :: o -> PipeChannel i o ()
 yield = syncOn YieldPipe
 
+infixl 7 >+>
 (>+>) :: (Applicative m, Monad m) => PipeChannelT x y m a -> PipeChannelT y z m a -> PipeChannelT x z m a
 FreeT a >+> FreeT b = FreeT $ do x <- a
                                  y <- b
@@ -42,6 +43,7 @@ FreeT a >+> FreeT b = FreeT $ do x <- a
                                    (_, Free (SyncChannel YieldPipe oZ iU)) -> runFreeT $ yield oZ >> (FreeT (return x) >+> iU ())
                                    (Free (SyncChannel YieldPipe oY iU), Free (SyncChannel AwaitPipe _ iY)) -> runFreeT $ iU () >+> iY oY
 
+infixl 7 <+<
 (<+<) :: (Applicative m, Monad m) => PipeChannelT y z m a -> PipeChannelT x y m a -> PipeChannelT x z m a
 FreeT a <+< FreeT b = FreeT $ do x <- a
                                  y <- b
