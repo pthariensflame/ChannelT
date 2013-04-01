@@ -32,7 +32,7 @@ sync :: o -> Channels ((i :~> o) ': sels) i
 sync = syncWith SyncSingle
 
 type family Interleave (xs :: [* -> * -> *]) (ys :: [* -> * -> *]) :: [* -> * -> *]
-type instance Interleave '[] '[] = []
+type instance Interleave '[] '[] = '[]
 type instance Interleave (x ': xs) '[] = x ': xs
 type instance Interleave '[] (y ': ys) = y ': ys
 type instance Interleave (x ': xs) (y ': ys) = x ': (y ': (Interleave xs ys))
