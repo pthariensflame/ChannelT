@@ -13,7 +13,7 @@ import Control.Applicative
 
 data MultiSelector :: [* -> * -> *] -> * -> * -> * where
   SyncWithMulti :: sel i o -> MultiSelector (sel ': sels) i o
-  LiftSMulti :: MultiSelector sels i o -> MultiSelector (sel ': sels) i o
+  LiftSMulti :: MultiSelector (sel1 ': sels) i o -> MultiSelector (sel0 ': (sel1 ': sels)) i o
 
 type MultiChannel sels a = Channel (MultiSelector sels) a
 
