@@ -10,7 +10,7 @@ name:                ChannelT
 version:             0.0.0.0
 
 -- A short (one-line) description of the package.
-synopsis:            Bidirectional stream processors
+synopsis:            Generalized stream processors
 
 -- A longer description of the package.
 -- description:         
@@ -31,7 +31,7 @@ maintainer:          alexanderaltman@me.com
 -- A copyright notice.
 -- copyright:           
 
-category:            Control
+category:            Control, Enumerator, Pipes, Proxies
 
 build-type:          Simple
 
