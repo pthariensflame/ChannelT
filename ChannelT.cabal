@@ -7,7 +7,7 @@ name:                ChannelT
 -- PVP summary:      +-+------- breaking API changes
 --                   | | +----- non-breaking API additions
 --                   | | | +--- code changes with no API change
-version:             0.0.0.0
+version:             0.1.0.0
 
 -- A short (one-line) description of the package.
 synopsis:            Generalized stream processors
@@ -41,25 +41,12 @@ cabal-version:       >= 1.8
 
 library
   -- Modules exported by the library.
-  exposed-modules:     Data.KUnit,
-                       Control.Monad.Channel,
-                       Control.Monad.Channel.Many,
-                       Control.Monad.Trans.Channel,
-                       Control.Monad.Channel.Class,
-                       Control.Monad.Channel.Selector.Empty,
-                       Control.Monad.Channel.Selector.Single,
-                       Control.Monad.Channel.Selector.Pipe,
-                       Control.Monad.Channel.Selector.Proxy,
-                       Control.Monad.Channel.Selector.Wye,
-                       Control.Monad.Channel.Selector.Tee,
-                       Control.Monad.Channel.Selector.Machine,
-                       Control.Monad.Channel.Selector.Comachine,
-                       Control.Monad.Channel.Selector.Dimachine,
-                       Control.Monad.Channel.Selector.Multi
+  exposed-modules:     Control.Channel,
+                       Control.Monad.Trans.Free.Instances
   
   -- Modules included in this library but not exported.
   -- other-modules:       
   
   -- Other library packages from which modules are imported.
-  build-depends:       base, mtl, free, transformers-base
+  build-depends:       base, mtl, free, transformers-base, mmorph
   
