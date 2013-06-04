@@ -1,18 +1,17 @@
 {-# LANGUAGE MultiParamTypeClasses, FunctionalDependencies, KindSignatures, ExistentialQuantification, FlexibleInstances, RankNTypes, LiberalTypeSynonyms #-}
 module Control.Channel (Channel,
                         ChannelT,
-                        module Control.Channel.Class,
+                        MonadChannel(..),
                         module Control.Monad.Trans,
                         module Control.Monad.Identity,
                         module Control.Monad.Base,
                         module Control.Monad.Morph,
                         -- * Internals
-                        ChannelF(..),
-                        syncOn) where
+                        ChannelF(..)) where
 import Control.Monad.Trans
 import Control.Monad.Identity
 import Control.Monad.Base
-import Control.Monad.Trans.Free (FreeT(..), FreeF(..))
+import Control.Monad.Morph
 import Control.Applicative (Applicative(..))
 import Control.Monad.Trans.Free.Instances
 
