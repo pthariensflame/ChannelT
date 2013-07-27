@@ -1,4 +1,4 @@
-{-# LANGUAGE MultiParamTypeClasses, FunctionalDependencies, KindSignatures, ExistentialQuantification, FlexibleInstances, RankNTypes, LiberalTypeSynonyms, UndecidableInstances #-}
+{-# LANGUAGE MultiParamTypeClasses, ExistentialQuantification, FlexibleInstances, RankNTypes, LiberalTypeSynonyms, UndecidableInstances #-}
 module Control.Monad.Trans.Free.Instances (FreeT(..), FreeF(..)) where
 import Control.Monad.Trans
 import Control.Monad.Base
