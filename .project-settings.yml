@@ -1,0 +1,11 @@
+extensions: {}
+cabal-file: project.cabal
+version: 1
+module-template: ! 'module MODULE_NAME where
+
+'
+modules:
+  Control.Monad.Trans.Free.Instances:
+    filename: Control/Monad/Trans/Free/Instances.hs
+  Control.Channel:
+    filename: Control/Channel.hs
