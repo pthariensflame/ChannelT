@@ -19,13 +19,13 @@ instance (Functor f) => MFunctor (FreeT f) where
   hoist = hoistFreeT
 
 newtype ChannelT sel m a = ChannelT { unChannelT :: FreeT (ChannelF sel) m a }
-    deriving (Functor, Applicative, Monad, MFunctor, MonadTrans)
+  deriving (Functor, Applicative, Monad, MFunctor, MonadTrans)
 deriving instance (MonadBase b m) => MonadBase b (ChannelT sel m)
 
 data ChannelF (sel :: * -> * -> *) (x :: *) = forall (i :: *) (o :: *). SyncChannel
-    { selectorF :: sel i o,
-      outputF :: o,
-      inputF :: i -> x }
+  { selectorF :: sel i o,
+    outputF :: o,
+    inputF :: i -> x }
 
 instance Functor (ChannelF sel) where
   fmap f (SyncChannel s o i) = SyncChannel s o (f . i)
