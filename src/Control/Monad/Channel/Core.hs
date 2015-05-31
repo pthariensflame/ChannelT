@@ -1,4 +1,6 @@
-{-# LANGUAGE MultiParamTypeClasses, FunctionalDependencies, KindSignatures, ExistentialQuantification, FlexibleInstances, UndecidableInstances #-}
+{-# LANGUAGE MultiParamTypeClasses, FunctionalDependencies, KindSignatures #-}
+{-# LANGUAGE ExistentialQuantification, FlexibleInstances, UndecidableInstances #-}
+{-# LANGUAGE StandaloneDeriving #-}
 module Control.Monad.Channel.Core (Channel,
                                   ChannelT,
                                   MonadChannel(..),
