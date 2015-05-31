@@ -2,12 +2,15 @@
 {-# LANGUAGE ExistentialQuantification, FlexibleInstances, UndecidableInstances #-}
 {-# LANGUAGE StandaloneDeriving, GeneralizedNewtypeDeriving, Trustworthy #-}
 module Control.Monad.Channel.Core (Channel,
-                                   ChannelT,
+                                   ChannelT(..),
                                    MonadChannel(..),
                                    module Control.Monad.Trans,
                                    module Control.Monad.Identity,
                                    module Control.Monad.Base,
-                                   module Control.Monad.Morph) where
+                                   module Control.Monad.Morph,
+                                   -- * Internals
+                                   ChannelF(..),
+                                   module Control.Monad.Trans.Free) where
 import Control.Monad.Trans
 import Control.Monad.Identity
 import Control.Monad.Base
