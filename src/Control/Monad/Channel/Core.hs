@@ -1,13 +1,13 @@
 {-# LANGUAGE MultiParamTypeClasses, FunctionalDependencies, KindSignatures #-}
 {-# LANGUAGE ExistentialQuantification, FlexibleInstances, UndecidableInstances #-}
-{-# LANGUAGE StandaloneDeriving #-}
+{-# LANGUAGE StandaloneDeriving, GeneralizedNewtypeDeriving, Trustworthy #-}
 module Control.Monad.Channel.Core (Channel,
-                                  ChannelT,
-                                  MonadChannel(..),
-                                  module Control.Monad.Trans,
-                                  module Control.Monad.Identity,
-                                  module Control.Monad.Base,
-                                  module Control.Monad.Morph) where
+                                   ChannelT,
+                                   MonadChannel(..),
+                                   module Control.Monad.Trans,
+                                   module Control.Monad.Identity,
+                                   module Control.Monad.Base,
+                                   module Control.Monad.Morph) where
 import Control.Monad.Trans
 import Control.Monad.Identity
 import Control.Monad.Base
