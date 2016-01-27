@@ -16,4 +16,4 @@ library
   hs-source-dirs:      src
   exposed-modules:     Control.Monad.Channel.Core
   -- other-modules:       
-  build-depends:       base, mtl, free, transformers-base, mmorph
+  build-depends:       base, mtl, free, transformers-base, mmorph, transformers-compat

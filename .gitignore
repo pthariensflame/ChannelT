@@ -1,4 +1,4 @@
-### https://raw.github.com/github/gitignore/e27b4277e2cd2f2e91ab343419df65f7192ab4dd/Global/Archives.gitignore
+### https://raw.github.com/github/gitignore/805aee54f12c077fc7c2c88cf2beb57ac449e901/Global/Archives.gitignore
 
 # It's better to unpack these files and commit the raw source because
 # git has its own built in compression methods.
@@ -29,12 +29,14 @@
 *.msp
 
 
-### https://raw.github.com/github/gitignore/e27b4277e2cd2f2e91ab343419df65f7192ab4dd/Global/Tags.gitignore
+### https://raw.github.com/github/gitignore/805aee54f12c077fc7c2c88cf2beb57ac449e901/Global/Tags.gitignore
 
 # Ignore tags created by etags, ctags, gtags (GNU global) and cscope
 TAGS
+.TAGS
 !TAGS/
 tags
+.tags
 !tags/
 gtags.files
 GTAGS
@@ -47,7 +49,7 @@ cscope.po.out
 
 
 
-### https://raw.github.com/github/gitignore/e27b4277e2cd2f2e91ab343419df65f7192ab4dd/Global/Emacs.gitignore
+### https://raw.github.com/github/gitignore/805aee54f12c077fc7c2c88cf2beb57ac449e901/Global/Emacs.gitignore
 
 # -*- mode: gitignore; -*-
 *~
@@ -82,18 +84,11 @@ tramp
 # cask packages
 .cask/
 
-
-### https://raw.github.com/github/gitignore/e27b4277e2cd2f2e91ab343419df65f7192ab4dd/Global/Vim.gitignore
-
-[._]*.s[a-w][a-z]
-[._]s[a-w][a-z]
-*.un~
-Session.vim
-.netrwhist
-*~
+# server auth directory
+/server/
 
 
-### https://raw.github.com/github/gitignore/e27b4277e2cd2f2e91ab343419df65f7192ab4dd/Global/OSX.gitignore
+### https://raw.github.com/github/gitignore/805aee54f12c077fc7c2c88cf2beb57ac449e901/Global/OSX.gitignore
 
 .DS_Store
 .AppleDouble
@@ -121,7 +116,7 @@ Temporary Items
 .apdisk
 
 
-### https://raw.github.com/github/gitignore/e27b4277e2cd2f2e91ab343419df65f7192ab4dd/Haskell.gitignore
+### https://raw.github.com/github/gitignore/805aee54f12c077fc7c2c88cf2beb57ac449e901/Haskell.gitignore
 
 dist
 cabal-dev
@@ -138,5 +133,6 @@ cabal.sandbox.config
 *.prof
 *.aux
 *.hp
+.stack-work/
 
 
