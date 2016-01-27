@@ -6,6 +6,7 @@ license:             BSD3
 license-file:        LICENSE
 author:              Alexander Altman
 maintainer:          alexanderaltman@me.com
+homepage:            https://github.com/pthariensflame/ChannelT
 copyright:           Copyright (c) 2015-2016, Alexander Altman
 category:            Control, Enumerator, Iteratee, Pipes, Proxies
 build-type:          Simple
