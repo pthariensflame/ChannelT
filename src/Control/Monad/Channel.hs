@@ -1,4 +1,4 @@
-{-# LANGUAGE Safe #-}
+{-# LANGUAGE Trustworthy #-}
 module Control.Monad.Channel (
   Channel,
   ChannelT,

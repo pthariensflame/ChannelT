@@ -1,6 +1,6 @@
 {-# LANGUAGE FunctionalDependencies, PolyKinds, FlexibleContexts #-}
 {-# LANGUAGE ExistentialQuantification, FlexibleInstances, UndecidableInstances #-}
-{-# LANGUAGE StandaloneDeriving, GeneralizedNewtypeDeriving, Trustworthy #-}
+{-# LANGUAGE StandaloneDeriving, GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE AutoDeriveTypeable, DeriveFunctor, DeriveGeneric #-}
 module Control.Monad.Channel.Internal (ChannelT(..), Channel, MonadChannel(..), ChannelF(..)) where
 import Control.Monad.Trans
