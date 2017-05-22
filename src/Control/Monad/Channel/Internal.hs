@@ -17,7 +17,7 @@ instance Functor f => MFunctor (FreeT f) where
 deriving instance Generic (FreeT f m a)
 
 newtype ChannelT sel m a = ChannelT { unChannelT :: FreeT (ChannelF sel) m a }
-  deriving (Functor, Applicative, Monad, MFunctor, MonadTrans, MonadFree (ChannelF sel), Generic1, Generic)
+  deriving (Functor, Applicative, Monad, MonadTrans, MonadFree (ChannelF sel), Generic1, Generic)
 deriving instance MonadBase b m => MonadBase b (ChannelT sel m)
 
 data ChannelF (sel :: * -> * -> *) (x :: *) =
@@ -33,5 +33,10 @@ class Monad m => MonadChannel (sel :: * -> * -> *) (m :: * -> *) | m -> sel wher
 
 instance Monad m => MonadChannel sel (ChannelT sel m) where
   syncOn s o = ChannelT . FreeT . return . Free . SyncChannel s o $ FreeT . return . Pure
+
+-- NB: Don't use GeneralizedNewtypeDeriving to create this instance, as it will
+-- trigger GHC Trac #11837 on GHC 8.0.1 and older.
+instance MFunctor (ChannelT sel) where
+  hoist f = ChannelT . hoist f . unChannelT
 
 type Channel sel = ChannelT sel Identity
