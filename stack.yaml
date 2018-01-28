@@ -2,5 +2,6 @@ flags: {}
 extra-package-dbs: []
 packages:
 - .
-extra-deps: []
+extra-deps:
+- free-5
 resolver: lts-10.4
