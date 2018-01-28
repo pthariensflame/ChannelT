@@ -25,9 +25,6 @@ import           Control.Monad.Trans
 import           Control.Monad.Trans.Free
 import           GHC.Generics
 
-instance (MonadBase b m, Functor f) => MonadBase b (FreeT f m) where
-  liftBase = liftBaseDefault
-
 instance Functor f => MFunctor (FreeT f) where
   hoist = hoistFreeT
 
@@ -46,7 +43,7 @@ newtype ChannelT sel m a = ChannelT
 
 deriving instance MonadBase b m => MonadBase b (ChannelT sel m)
 
-data ChannelF (sel :: * -> * -> *) (x :: *) = forall (o :: *) (i :: *). SyncChannel
+data ChannelF (sel :: * -> * -> *) (x :: *) = forall (i :: *) (o :: *). SyncChannel
   { selectorF :: sel i o
   , outputF   :: o
   , inputF    :: i -> x
